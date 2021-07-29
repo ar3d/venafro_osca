@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>&lt;model-viewer&gt; example</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="demo-styles.css">
+    
+    <!-- The following libraries and polyfills are recommended to maximize browser support -->
+    <!-- NOTE: you must adjust the paths as appropriate for your project -->
+    
+    <!-- 🚨 REQUIRED: Web Components polyfill to support Edge and Firefox < 63 -->
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.1.3/webcomponents-loader.js"></script>
+
+    <!-- 💁 OPTIONAL: Intersection Observer polyfill for better performance in Safari and IE11 -->
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+
+    <!-- 💁 OPTIONAL: Resize Observer polyfill improves resize behavior in non-Chrome browsers -->
+    <script src="https://unpkg.com/resize-observer-polyfill@1.5.0/dist/ResizeObserver.js"></script>
+
+    <!-- 💁 OPTIONAL: Fullscreen polyfill is needed to fully support AR features -->
+    <script src="https://unpkg.com/fullscreen-polyfill@1.0.2/dist/fullscreen.polyfill.js"></script>
+
+    <!-- 💁 OPTIONAL: Include prismatic.js for Magic Leap support -->
+    <script src="https://unpkg.com/@magicleap/prismatic/prismatic.min.js"></script>
+    
+    <!-- 💁 OPTIONAL: The :focus-visible polyfill removes the focus ring for some input types -->
+    <script src="https://unpkg.com/focus-visible@5.0.2/dist/focus-visible.js" defer></script>
+
+<style>
+body {
+  margin: 1em;
+  padding: 0;
+  font-family: Google Sans, Noto, Roboto, Helvetica Neue, sans-serif;
+  color: #244376;
+}
+
+
+#card {
+  margin: 3em auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  border-radius: 6px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+model-viewer {
+  width: 100%;
+  height: 400px;
+    background: linear-gradient(to top right, rgb(218, 221, 227), rgb(119, 124, 133));
+      --poster-color: transparent;
+      --ar-button-scale: 1.25;
+}
+
+.attribution {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1em;
+}
+
+.attribution h1 {
+  margin: 0 0 0.25em;
+}
+
+.attribution img {
+  opacity: 0.5;
+  height: 2em;
+}
+
+.attribution .cc {
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+  font-style: italic;
+  line-height: 1.5em;
+}
+
+    model-viewer:not(.show-hotspots) .hotspot {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hotspot {
+      position: relative;
+      background: rgb(89, 2, 2);
+      border-radius: 24px;
+      box-sizing: border-box;
+      border: 0;
+      transition: opacity 0.3s;
+      width: 16px;
+      height: 16px;
+      padding: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    }
+
+    .hotspot:not([data-visible]) {
+      background: transparent;
+      border: 4px solid #590202;
+
+      width: 24px;
+      height: 24px;
+      box-shadow: none;
+      pointer-events: none;
+    }
+
+    .hotspot:focus {
+      border: 4px solid rgb(0, 128, 200);
+      width: 24px;
+      height: 24px;
+      outline: none;
+    }
+
+    .hotspot > * {
+      transform: translateY(-50%);
+      opacity: 1;
+    }
+
+    .hotspot:not([data-visible]) > * {
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(calc(-50% + 4px));
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    .info {
+      display: block;
+      position: absolute;
+      font-family: Futura, Helvetica Neue, sans-serif;
+      color: rgba(0, 0, 0, 0.8);
+      font-weight: 700;
+      font-size: 16px;
+      max-width: 1000px;
+      padding: 0.5em 1em;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+      left: calc(100% + 1em);
+      top: 50%;
+    }
+
+    paper-toggle-button {
+      --paper-toggle-button-checked-bar-color:  var(--paper-orange-500);
+      --paper-toggle-button-checked-button-color:  var(--paper-orange-500);
+      --paper-toggle-button-checked-ink-color: var(--paper-orange-500);
+      --paper-toggle-button-label-color: #eee;
+      position: absolute;
+      bottom: 1em;
+      left: 1em;
+    }
+    
+    .mwc-switch-wrapper {
+      position: absolute;
+      bottom: 2em;
+      left: 2em;
+      color: #fff;
+    }
+    
+    mwc-switch > span {
+      display: inline-block;
+      height: 1em;
+      vertical-align: 1px;
+      margin: 0 0.75em;
+    }
+
+    mwc-switch {
+      --mdc-theme-secondary: orange;
+      font-family: system-ui;
+</style>
+
+  </head> 
+<body>
+     <!-- All you need to put beautiful, interactive 3D content on your site: -->
+<div id="card">  
+<model-viewer src="santa_croce.glb" 
+              camera-controls ar ar-modes="scene-viewer webxr quick-look" 
+              camera-target="0.07597m -0.05m -0.1m" camera-orbit="3.786e-15deg 75deg 1.692m" 
+              min-camera-orbit="auto auto auto" 
+              max-camera-orbit="auto auto 1.692m" 
+              poster="poster.png"> 
+	 <button class="Hotspot" slot="hotspot-1" data-position="-0.11687637718781468m 0.8474054305248115m 0.017149647212407262m" data-normal="0.39588327010008056m 0.8026669780229863m 0.44609658017778386m" data-visibility-attribute="visible">
+          <div class="info">Mura megalitiche di epoca sannitica</div>
+      </button>
+	<button class="Hotspot" slot="hotspot-2" data-position="-0.11158203650608825m 0.81520768234537m 0.07818666228194948m" data-normal="0.12532103070633027m 0.9635179238200425m 0.23649069694222147m" data-visibility-attribute="visible">
+          <div class="info">Mura di epoca romana</div>
+      </button>
+	<button class="Hotspot" slot="hotspot-3" data-position="-0.18011160357864014m 0.8128934946023033m 0.2098358083019639m" data-normal="0.04706190844917322m 0.9988539009391594m 0.008721315941164926m" data-visibility-attribute="visible">
+          <div class="info">Raccordo della via Latina da Venafrum a Ad Flexum</div>
+      </button>
+	<button class="Hotspot" slot="hotspot-4" data-position="-0.012607731267373787m 0.8098857631384019m 0.20030563859649092m" data-normal="0.005119062036916539m 0.9999790829353494m 0.003953339808315151m" data-visibility-attribute="visible">
+          <div class="info">Raccordo della via Latina da Venafrum a Teanum</div>
+      </button>
+	<button class="Hotspot" slot="hotspot-5" data-position="0.12334700224439925m 0.8096092014739944m 0.32006196416148047m" data-normal="0.00014556425923081565m 0.9999719075391678m 0.007494193987667007m" data-visibility-attribute="visible">
+          <div class="info">Raccordo della via Latina dal ponte Reale a S.M. della Ferrara</div>
+      </button>
+	<button class="Hotspot" slot="hotspot-6" data-position="0.16201959902336255m 0.8122855262253735m -0.04054078228711383m" data-normal="0.008004983342530725m 0.9998406447052637m 0.015956360394791154m" data-visibility-attribute="visible">
+          <div class="info">Strada romana da Venafrum ad Aufidena</div>
+      </button>
+	<button class="Hotspot" slot="hotspot-7" data-position="0.34433974567233755m 0.813236405752705m 0.12468242918042471m" data-normal="-0.148798758796204m 0.9828825895698228m 0.10863123170262184m" data-visibility-attribute="visible">
+          <div class="info">Strada romana da Aesernia ad Alife</div>
+      </button>
+	<button class="Hotspot" slot="hotspot-8" data-position="-0.06244533729418705m 0.8117959672501708m 0.08509518053311772m" data-normal="0m 0.999999999999991m 1.3435886108395827e-7m" data-visibility-attribute="visible">
+          <div class="info">Ipotesi ricostruttiva delle insule della colonia</div>
+      </button><button class="Hotspot" slot="hotspot-9" data-position="0.30062315939186535m 0.8123590682471085m -0.07281008064766917m" data-normal="0.003419224335777377m 0.9995290277892335m 0.03049641801345442m" data-visibility-attribute="visible">
+          <div class="info">Raccordo di ponte Latrone</div>
+      </button>
+    <div class="mwc-switch-wrapper">
+      <mwc-switch id="toggleHotspots"><span>Show info</span></mwc-switch>
+    </div>
+<!--     <paper-toggle-button id="toggleHotspots">Show annotations</paper-toggle-button> -->
+</model-viewer>
+<section class="attribution">
+      <span>
+        <h1>La fontana di Roberto Avelerio</h1>
+        <span><a href="https://www.francovalente.it/2011/06/11/la-fontana-di-roberto-avalerio-a-s-maria-della-strada-di-matrice/" target="_blank">Vuoi saperne di più?</a></span>
+      </span>
+      <a class="cc" href="https://creativecommons.org/licenses/by/2.0/" target="_blank">
+        <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg">
+        <img src="https://mirrors.creativecommons.org/presskit/icons/by.svg">
+      </a>
+    </section>   
+  </div>
+
+<script type="module">
+    
+    toggleHotspots.addEventListener('change', () => {
+      modelViewer.classList.toggle('show-hotspots', toggleHotspots.checked);
+    });
+    
+  </script>
+
+   
+  
+  
+  
+  <!-- 💁 Include both scripts below to support all browsers! -->
+
+  <!-- Loads <model-viewer> for modern browsers: -->
+  <script type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js">
+  </script>
+
+  <!-- Loads <model-viewer> for old browsers like IE11: -->
+  <script nomodule
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer-legacy.js">
+  </script>
+  <!--   <script type="module" src="https://unpkg.com/@polymer/paper-toggle-button@3.0.1/paper-toggle-button.js?module"></script> -->
+  <script type="module" src="https://unpkg.com/@material/mwc-switch@0.14.1/mwc-switch.js?module"></script>
+</body>
+</html>
