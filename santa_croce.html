@@ -31,6 +31,10 @@
       </button><button class="Hotspot" slot="hotspot-9" data-position="0.30062315939186535m 0.8123590682471085m -0.07281008064766917m" data-normal="0.003419224335777377m 0.9995290277892335m 0.03049641801345442m" data-visibility-attribute="visible">
           <div class="HotspotAnnotation">Raccordo di ponte Latrone</div>
       </button>
+      <div class="mwc-switch-wrapper">
+      <mwc-switch id="toggleHotspots"><span>Show info</span></mwc-switch>
+    </div>
+<!--     <paper-toggle-button id="toggleHotspots">Show annotations</paper-toggle-button> -->
       <div class="progress-bar hide" slot="progress-bar">
           <div class="update-bar"></div>
       </div>
@@ -44,5 +48,12 @@
     <script src="script.js"></script>
     <!-- Loads <model-viewer> for browsers: -->
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script type="module">
+    
+    toggleHotspots.addEventListener('change', () => {
+      modelViewer.classList.toggle('show-hotspots', toggleHotspots.checked);
+    });
+    
+  </script>
   </body>
 </html>
