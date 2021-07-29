@@ -32,9 +32,9 @@
           <div class="HotspotAnnotation">Raccordo di ponte Latrone</div>
       </button>
       <div class="mwc-switch-wrapper">
-      <mwc-switch id="toggleHotspots"><span>Show info</span></mwc-switch>
+      <mwc-switch id="toggleHotspots"><span>Show HotspotAnnotation</span></mwc-switch>
     </div>
-<!--     <paper-toggle-button id="toggleHotspots">Show annotations</paper-toggle-button> -->
+<!--     <paper-toggle-button id="toggleHotspots">Mostra gli hotspot</paper-toggle-button> -->
       <div class="progress-bar hide" slot="progress-bar">
           <div class="update-bar"></div>
       </div>
@@ -51,7 +51,7 @@
 <script type="module">
     
     toggleHotspots.addEventListener('change', () => {
-      modelViewer.classList.toggle('show-hotspots', toggleHotspots.checked);
+      modelViewer.classList.toggle('show-Hotspots', toggleHotspots.checked);
     });
     
   </script>
