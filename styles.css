@@ -11,12 +11,12 @@ model-viewer {
   background: linear-gradient(to top right, rgb(218, 221, 227), rgb(119, 124, 133));
 }
 
- model-viewer:not(.show-hotspots) .hotspot {
+ model-viewer:not(.show-hotspots) .Hotspot {
       opacity: 0;
       pointer-events: none;
     }
 
- .hotspot {
+ .Hotspot {
       position: relative;
       background: rgb(89, 2, 2);
       border-radius: 12px;
@@ -30,7 +30,7 @@ model-viewer {
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
     }
 
-.hotspot:not([data-visible]) {
+.Hotspot:not([data-visible]) {
   background: transparent;
   border: 2px solid #590202;
   box-shadow: none;
@@ -39,20 +39,20 @@ model-viewer {
   width: 12px;
 }
 
-.hotspot:focus {
+.Hotspot:focus {
   border: 2px solid rgb(237, 237, 237);
   height: 12px;
   outline: none;
   width: 12px;
 }
 
-.hotspot > * {
+.Hotspot > * {
   opacity: 1;
   transform: translateY(-50%);
   opacity: 1;
 }
 
- .hotspot:not([data-visible]) > * {
+ .Hotspot:not([data-visible]) > * {
       pointer-events: none;
       opacity: 0;
       transform: translateY(calc(-50% + 2px));
